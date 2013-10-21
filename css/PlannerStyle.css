@@ -1,0 +1,35 @@
+/* 
+    Document   : PlannerManagerStyle
+    Created on : Oct 21, 2013, 8:40:41 PM
+    Author     : Unrtech
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+.tabPlanner {
+    width: 940px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+}
+#tabPlannerColHeader {
+    
+}
+.colHeader {
+    
+}
+.rowHeader {
+    
+}
+#tabPlannerBody {
+    
+}
+.colPlannedPost {
+    
+}
+.tabPlannerCell {
+    
+}

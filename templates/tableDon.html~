@@ -1,0 +1,232 @@
+<form name="frmAddAsso" method="POST" action="">
+    <label for="txtAssoName">Nom de l&#39;association : </label>
+    <input type="text" name="txtAssoName" id="txtAssoName"/>
+    <input type="submit" value="Enregistrer" />
+    <input type="reset" value="Annuler" />
+</form>
+
+<div class="tabDons">
+    <div id="tabDonsHeader">
+        <div class="lineAssoHeader">Association</div>
+        <div class="lineColisHeader">Croquettes</div>
+        <div class="lineColisHeader">Pat&eacute;es</div>
+        <div class="lineColisHeader">Liti&egrave;re</div>
+        <div class="lineColisHeader">Soins</div>
+        <div class="lineColisHeader">Entretien</div>
+        <div class="lineColisHeader">Nourisseuse</div>
+        <div class="lineColisHeader">CDPEP</div>
+    </div>
+    <div id="tabDonsBody">#TAB_DONS_BODY#</div>
+</div>
+
+<div id="modalColis">
+    <form name="frmColisPost" method="POST" action="">
+        <fieldset>
+            <label for="selStatutColis">Statut : </label>
+            <select name="selStatutColis" id="selStatutColis">
+                <option value="-1" style="background-color: white; color: black"></option>
+                <option value="0"  style="background-color: blue;  color: black">En attente</option>
+                <option value="1"  style="background-color: red;   color: black">En cours</option>
+                <option value="2"  style="background-color: green; color: black">Envoyé</option>
+                <option value="3"  style="background-color: yellow; color: black">à envoyer</option>
+            </select>
+            <br/>
+        </fieldset>
+        <br/>
+        <fieldset>
+            <label for="txtComment">Commentaire :</label><br/>
+            <textarea wrap="soft" cols="80" rows="10" id="txtComment" name="txtComment"></textarea>
+            <input type="hidden" name="slugAsso" id="slugAssoForm" value=""/>
+        </fieldset>
+        <p style="float: right;">
+            <button type="submit" id="btSubmitDialog">Enregistrer</button>
+            <button type="reset" id="btCancelDialog">Annuler</button>
+        </p>
+    </form>
+</div>
+<div id="modalAssoForm">
+    <form name="assoForm" method="POST" action="" id="assoForm">
+        <fieldset>
+            <p><label for="txtAssoNom">Association : </label><br>
+            <input type="text" name="txtAssoNom" class="bigInput" id="txtAssoNom"/></p>
+            <p><label for="txtAssoAddress">Adresse : </label><br>
+            <input type="text" name="txtAssoAddress" class="bigInput" id="txtAssoAddress"/></p>
+            <p><label for="txtAssoMail">Mail : </label><br>
+            <input type="text" name="txtAssoMail" class="bigInput" id="txtAssoMail"/></p>
+            <p><label for="txtAssoTel">Tel : </label><br>
+            <input type="text" name="txtAssoTel" class="bigInput" id="txtAssoTel"/></p>
+            <p><label for="txtAssoContact">Contact : </label><br>
+            <input type="text" name="txtAssoContact" class="bigInput" id="txtAssoContact"/></p>
+            <p><label for="txtAssoSite">Site : </label><br>
+            <input type="text" name="txtAssoSite" class="bigInput" id="txtAssoSite"/></p>
+            <p><label for="txtAssoAttestation">Attestation : </label><br>
+            <input type="checkbox" name="txtAssoAttestation" id="txtAssoAttestation"/></p>
+        </fieldset>
+        <p style="float: right;">
+            <input type="hidden" name="slugFrmAsso" id="slugFrmAsso" value=""/>
+            <input type="hidden" name="attestationFrmAsso" id="attestationFrmAsso" value=""/>
+            <button type="submit" id="btSubmitAssoFormDialog">Enregistrer</button>
+            <button type="reset" id="btCancelAssoFormDialog">Annuler</button>
+        </p>
+    </form>
+</div>
+
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery('.hidStatut').each(function(){
+            switch (jQuery(this).val()) {
+                case '0' :
+                    jQuery(this).parent().css({'background-color':'blue'});
+                    break;
+                case '1' :
+                    jQuery(this).parent().css({'background-color':'red'});
+                    break;
+                case '2' :
+                    jQuery(this).parent().css({'background-color':'green'});
+                    break;
+                case '3' :
+                    jQuery(this).parent().css({'background-color':'yellow'});
+                    break;
+                default :
+                    jQuery(this).parent().css({'background-color':'white'});
+                    break;
+            }
+        });
+        jQuery('#tabDons').tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                track: true/*,
+                using: function(position, feedback) {
+                    jQuery(this).css(position);
+                    jQuery("<div>")
+                        .addClass("arrow")
+                        .addClass(feedback.vertical)
+                        .addClass(feedback.horizontal)
+                        .appendTo(this);
+                }*/
+            }
+        });
+        jQuery('#modalColis').dialog({
+            autoOpen: false,
+            width: "auto",
+            height: "auto",
+            modal: true,
+            resizable: false
+        });
+        jQuery('#modalAssoForm').dialog({
+            autoOpen: false,
+            width: "auto",
+            height: "auto",
+            modal: true,
+            title: 'Modifier Association',
+            resizable: false
+        });
+        jQuery('#txtAssoAttestation').click(function(){
+            if (jQuery(this).attr('checked') == "checked") {
+                jQuery('#attestationFrmAsso').val(1);
+            } else {
+                jQuery('#attestationFrmAsso').val(0);
+            }
+        });
+        jQuery('.rmAsso').unbind('click').click(function(){
+            var jQueryline = jQuery(this).parent('.lineDon');
+            var slugAsso = jQuery('#slugAsso', jQueryline).val();
+            if (confirm("Effacer cette association ?")) {
+                jQuery.get('?rmAsso='+slugAsso, function(res){
+                    window.location.href = "?page=ManageDonsMenu";
+                });
+            }
+        });
+        jQuery('#btSubmitDialog').button();
+        jQuery('#btSubmitAssoFormDialog').button();
+        jQuery('#btCancelDialog').button().unbind('click').click(function() {
+            jQuery('#selStatutColis').val(-1);
+            jQuery('#selStatutColis').change();
+            jQuery('#txtComment').empty();
+            jQuery('#modalColis').dialog('close');
+        });
+        jQuery('#btCancelAssoFormDialog').button().unbind('click').click(function() {
+            jQuery('input', '#modalAssoForm').empty();
+            jQuery('#modalAssoForm').dialog('close');
+        });
+        jQuery('.lineAsso').dblclick(function(){
+            var jQueryline = jQuery(this).parent('.lineDon');
+            var slugAsso = jQuery('#slugAsso', jQueryline).val();
+            jQuery('#slugFrmAsso').val(slugAsso);
+            jQuery.getJSON('?asso='+slugAsso, function(res){
+                if (res) {
+                    jQuery('#txtAssoNom').val(res.association);
+                    jQuery('#txtAssoAddress').val(res.address);
+                    jQuery('#txtAssoMail').val(res.mail);
+                    jQuery('#txtAssoTel').val(res.tel);
+                    jQuery('#txtAssoContact').val(res.contact);
+                    jQuery('#txtAssoSite').val(res.site);
+                    jQuery('#attestationFrmAsso').val(res.attestation);
+                    if (parseInt(jQuery('#attestationFrmAsso').val()) === 1) {
+                        jQuery('#txtAssoAttestation').attr('checked', 'checked');
+                    } else {
+                        jQuery('#txtAssoAttestation').attr('checked', false);
+                    }
+                }
+            }).complete(function(){
+                jQuery('#modalAssoForm').dialog('open');
+            });
+        });
+        jQuery('.lineColis').dblclick(function() {
+            var jQueryline = jQuery(this).parent('.lineDon');
+            var index = jQuery(this).index() -1;
+            var statut = jQuery(this).find('.hidStatut').val();
+            var comment = (jQuery(this).find('a.lineDonComment').attr('title') !== '')?jQuery(this).find('a.lineDonComment').attr('title'):'';
+            jQuery('#modalColis').dialog('option', 'title',
+                    jQueryline.find('.lineAsso').html() + ' - ' + jQuery('#tabDonsHeader .lineColisHeader:eq(' + index + ')').html());
+            var slugAsso = jQuery('#slugAsso', jQueryline).val();
+            switch (jQuery('#tabDonsHeader .lineColisHeader:eq(' + index + ')').text().toLowerCase()) {
+                case 'croquettes':
+                    jQuery('#slugAssoForm').val(slugAsso+'___croquettes');
+                    break;
+                case 'patées':
+                    jQuery('#slugAssoForm').val(slugAsso+'___patees');
+                    break;
+                case 'litière':
+                    jQuery('#slugAssoForm').val(slugAsso+'___litiere');
+                    break;
+                case 'soins':
+                    jQuery('#slugAssoForm').val(slugAsso+'___soins');
+                    break;
+                case 'entretien':
+                    jQuery('#slugAssoForm').val(slugAsso+'___entretien');
+                    break;
+                case 'nourisseuse':
+                    jQuery('#slugAssoForm').val(slugAsso+'___nourisseuse');
+                    break;
+                case 'cdpep':
+                    jQuery('#slugAssoForm').val(slugAsso+'___cdpep');
+                    break;
+                default:
+                    jQuery('#slugAssoForm').val(null);
+                    break;
+            }
+            jQuery('#modalColis').dialog('open');
+            jQuery('#selStatutColis').change(function() {
+                switch (jQuery(this).val()) {
+                    case '0':
+                        jQuery('#selStatutColis').css({'background-color': 'blue'});
+                        break;
+                    case '1':
+                        jQuery('#selStatutColis').css({'background-color': 'red'});
+                        break;
+                    case '2':
+                        jQuery('#selStatutColis').css({'background-color': 'green'});
+                        break;
+                    default:
+                        jQuery('#selStatutColis').css({'background-color': 'white'});
+                        break;
+                }
+            });
+            jQuery('#selStatutColis').val(statut);
+            jQuery('#selStatutColis').change();
+            jQuery('#txtComment').val(comment);
+        });
+    });
+</script>

@@ -1,0 +1,92 @@
+<div class="tabPlanner">
+    <div id="tabPlannerColHeader">
+        <div class="colHeader colMondayHeader">#MONDAY#</div>
+        <div class="colHeader colTuesdayHeader">#TUESDAY#</div>
+        <div class="colHeader colWednesdayHeader">#WEDNESDAY#</div>
+        <div class="colHeader colThursdayHeader">#THURSDAY#</div>
+        <div class="colHeader colFridayHeader">#FRIDAY#</div>
+        <div class="colHeader colSaturdayHeader">#SATURDAY#</div>
+        <div class="colHeader colSundayHeader">#SUNDAY#</div>
+    </div>
+    <div id="tabPlannerRowHeader">
+        <div class="rowHeader row8H">8h</div>
+        <div class="rowHeader row9H">9h</div>
+        <div class="rowHeader row10H">10h</div>
+        <div class="rowHeader row11H">11h</div>
+        <div class="rowHeader row12H">12h</div>
+        <div class="rowHeader row13H">13h</div>
+        <div class="rowHeader row14H">14h</div>
+        <div class="rowHeader row15H">15h</div>
+        <div class="rowHeader row16H">16h</div>
+        <div class="rowHeader row17H">17h</div>
+        <div class="rowHeader row18H">18h</div>
+    </div>
+    <div id="tabPlannerBody" data-scroll="#TAB_PLANNER_CSS_TOP#">#TAB_PLANNER_BODY#</div>
+</div>
+
+<div id="modalPlannedPost">
+    <form name="frmPlannedPost" method="POST" action="">
+        <fieldset>
+            <label for="txtDayHour">Heure : </label>
+            <input type="text" id="txtDayHour" name="txtDayHour" value="" disabled="disabled"/>
+            <hr/>
+            <label for="txtDayTitle">Titre : </label>
+            <input type="text" id="txtDayTitle" name="txtDayTitle" value=""/>
+            <hr/>
+            <label for="radDayWeek">N&#39;importe : </label>
+            <input type="radio" id="radDayWeek" name="radDayWeek" value="N"/>
+            <label for="radDayWeekPair">Jours pairs : </label>
+            <input type="radio" id="radDayWeekPair" name="radDayWeek" value="P"/>
+            <label for="radDayWeek">Jours impairs : </label>
+            <input type="radio" id="radDayWeekImpair" name="radDayWeek" value="I"/>
+        </fieldset>
+        <br/>
+        <fieldset>
+            <label for="txtComment">Commentaire :</label><br/>
+            <textarea wrap="soft" cols="80" rows="10" id="txtComment" name="txtComment"></textarea>
+        </fieldset>
+        <p style="float: right;">
+            <button type="submit" id="btSubmitDialog">Enregistrer</button>
+            <button type="reset" id="btCancelDialog">Annuler</button>
+        </p>
+    </form>
+</div>
+
+<script type="text/javascript">
+    jQuery(function($) {
+        $('#tabPlanner').tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                track: true
+            }
+        });
+        $('#modalPlannedPost').dialog({
+            autoOpen: false,
+            width: "auto",
+            height: "auto",
+            modal: true,
+            resizable: false
+        });
+        $('#btCancelDialog').button().unbind('click').click(function() {
+            $('#txtComment').empty();
+            $('#modalColis').dialog('close');
+        });
+        $('#btSubmitDialog').button().unbind('click').click(function() {
+            $('#txtComment').empty();
+            $('#modalAssoForm').dialog('close');
+        });
+        $('.tabPlannerCell').dblclick(function(){
+            var hour = $(this).att('data-hour');
+            var day = $(this).parent('.colPlannedPost').attr('data-day');
+            
+            $.getJSON('?plannedPost='+day+'-'+hour, function(res){
+                if (res) {
+                    
+                }
+            }).complete(function(){
+                $('#modalPlannedPost').dialog('open');
+            });
+        });
+    });
+</script>
