@@ -10,26 +10,71 @@ root {
     display: block;
 }
 .tabPlanner {
-    width: 940px;
+    width: 990px;
     border: 1px solid gray;
     border-radius: 5px;
     padding: 5px;
+    height: 850px;
 }
 #tabPlannerColHeader {
     
 }
 .colHeader {
-    
+    border: 1px solid #21759B;
+    display: inline-block;
+    height: 20px;
+    margin: 9px;
+    padding-top: 10px;
+    text-align: center;
+    width: 100px;
+    border-radius: 5px;
+}
+.firstColHeader {
+    border: 1px solid #fff;
 }
 .rowHeader {
-    
+    border: 1px solid #21759B;
+    height: 40px;
+    margin: 10px;
+    padding-top: 20px;
+    text-align: center;
+    vertical-align: middle;
+    width: 90px;
+    border-radius: 5px;
 }
 #tabPlannerBody {
-    
+    left: 0;
+    margin-left: 124px;
+    position: relative;
+    top: -803px;
 }
 .colPlannedPost {
-    
+    display: inline-block;
+    vertical-align: top;
 }
 .tabPlannerCell {
-    
+    border: 1px solid #21759B;
+    height: 60px;
+    margin: 10px 9px 9px;
+    text-align: center;
+    vertical-align: middle;
+    width: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 5px;
+}
+.tabPlannerCell:hover {
+    cursor: pointer;
+    border: 1px dotted #555555;
+}
+.loadingLayout {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+    left: 0px;
+    top: 0px;
+    background-color: #ccc;
+    opacity: 0.8;
 }
