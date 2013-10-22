@@ -1,0 +1,128 @@
+<script type="text/javascript" src="../wp-content/plugins/Planner/js/CustomTinyMCE/tinymce.min.js"></script>
+<script type="text/javascript">
+    jQuery(function($) {
+        $('.loadingLayout').show();
+    });
+</script>
+<div class="alert alert-success">#ALERTSUCCESS#</div>
+<div class="alert alert-info">#ALERTINFO#</div>
+<div class="alert alert-error">#ALERTERROR#</div>
+<div class="tabPlanner">
+    <div id="tabPlannerColHeader">
+        <div class="colHeader firstColHeader">&nbsp;</div>
+        <div class="colHeader colMondayHeader">#MONDAY#</div>
+        <div class="colHeader colTuesdayHeader">#TUESDAY#</div>
+        <div class="colHeader colWednesdayHeader">#WEDNESDAY#</div>
+        <div class="colHeader colThursdayHeader">#THURSDAY#</div>
+        <div class="colHeader colFridayHeader">#FRIDAY#</div>
+        <div class="colHeader colSaturdayHeader">#SATURDAY#</div>
+        <div class="colHeader colSundayHeader">#SUNDAY#</div>
+    </div>
+    <div id="tabPlannerRowHeader">
+        <div class="rowHeader row8H">8h</div>
+        <div class="rowHeader row9H">9h</div>
+        <div class="rowHeader row10H">10h</div>
+        <div class="rowHeader row11H">11h</div>
+        <div class="rowHeader row12H">12h</div>
+        <div class="rowHeader row13H">13h</div>
+        <div class="rowHeader row14H">14h</div>
+        <div class="rowHeader row15H">15h</div>
+        <div class="rowHeader row16H">16h</div>
+        <div class="rowHeader row17H">17h</div>
+        <div class="rowHeader row18H">18h</div>
+    </div>
+    <div id="tabPlannerBody" >#TAB_PLANNER_BODY#</div>
+</div>
+
+<div id="modalPlannedPost">
+    <form name="frmPlannedPost" method="POST" action="">
+        <input type="hidden" name="secureToken" value="#TOKEN#"/>
+        <fieldset>
+            <p><label for="txtDayDay">Jour : </label>
+                <input type="text" id="txtDayDay" name="txtDayDay" value="" readonly="readonly"/></p>
+            <p><label for="txtDayHour">Heure : </label>
+            <input type="text" id="txtDayHour" name="txtDayHour" value="" readonly="readonly"/></p>
+        </fieldset>
+        <br/>
+        <fieldset>
+            <p><label for="txtComment">Commentaire :</label></p>
+            <p><textarea wrap="soft" cols="80" rows="10" id="txtComment" name="txtComment"></textarea></p>
+        </fieldset>
+        <p style="float: right;">
+            <button type="submit" id="btSubmitDialog">Enregistrer</button>
+            <button type="reset" id="btCancelDialog">Annuler</button>
+        </p>
+    </form>
+</div>
+<div class="loadingLayout">
+    <img src="../wp-content/plugins/Planner/images/ajax-loader.gif" style="position: absolute; top: 300px;"/>
+</div>
+<script type="text/javascript">
+    jQuery(function($) {
+        if (typeof tinymce === "object") {
+            tinymce.init({
+                selector: "#txtComment",
+                language: 'fr_FR',
+                theme: "modern",
+                plugins: [
+                    "advlist autolink lists link",
+                    "wordcount",
+                    "directionality",
+                    "emoticons paste textcolor"
+                ],
+                menubar : false,
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                toolbar2: "forecolor backcolor emoticons",
+                image_advtab: true
+            });
+        }
+
+        $('#tabPlanner').tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                track: true
+            }
+        });
+        $('#modalPlannedPost').dialog({
+            autoOpen: false,
+            width: "auto",
+            height: "auto",
+            modal: true,
+            resizable: false,
+            title: "Editer l'article pour "
+        });
+        $('#btCancelDialog').button().unbind('click').click(function() {
+            $('#txtComment').empty();
+            $('#txtDayDay').empty();
+            $('#txtDayHour').empty();
+            $('#modalPlannedPost').dialog('close');
+        });
+        $('#btSubmitDialog').button().unbind('click').click(function() {
+            $('#modalPlannedPost').dialog('close');
+        });
+        $('.tabPlannerCell').click(function(){
+            var $el = $(this);
+            var hour = $(this).attr('data-hour');
+            var day = $(this).parent('.colPlannedPost').attr('data-day');
+            $('#modalPlannedPost').dialog(
+                'option', 
+                'title', 
+                $('#modalPlannedPost').dialog('option', 'title') + day + " " + hour
+            );
+            $('#txtDayDay').val(day);
+            $('#txtDayHour').val(hour);
+            $('#txtComment').html($el.attr('title'));
+            
+            $('#modalPlannedPost').dialog('open');
+            
+//            $.getJSON('?plannedPost='+day+'-'+hour, function(res){
+//                if (res) {
+//                    
+//                }
+//            }).complete(function(){
+//            });
+        });
+        $('.loadingLayout').hide();
+    });
+</script>
