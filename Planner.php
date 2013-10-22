@@ -173,16 +173,27 @@ function planner_manager_table() {
     for ($i = 0 ; $i <= 6 ; $i++) {
         $task = $planning[$i];
         
+        $colResponse = str_replace('#TITLE81H#', stripslashes(strip_tags($task['8h']['comment'])),   $tplColPlanner);
         $colResponse = str_replace('#TITLE8H#', stripslashes($task['8h']['comment']),   $tplColPlanner);
+        $colResponse = str_replace('#TITLE91H#', stripslashes(strip_tags($task['9h']['comment'])),   $colResponse);
         $colResponse = str_replace('#TITLE9H#', stripslashes($task['9h']['comment']),   $colResponse);
+        $colResponse = str_replace('#TITLE101H#',stripslashes(strip_tags($task['10h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE10H#',stripslashes($task['10h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE111H#',stripslashes(strip_tags($task['11h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE11H#',stripslashes($task['11h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE121H#',stripslashes(strip_tags($task['12h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE12H#',stripslashes($task['12h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE131H#',stripslashes(strip_tags($task['13h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE13H#',stripslashes($task['13h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE141H#',stripslashes(strip_tags($task['14h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE14H#',stripslashes($task['14h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE151H#',stripslashes(strip_tags($task['15h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE15H#',stripslashes($task['15h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE161H#',stripslashes(strip_tags($task['16h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE16H#',stripslashes($task['16h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE171H#',stripslashes(strip_tags($task['17h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE17H#',stripslashes($task['17h']['comment']),  $colResponse);
+        $colResponse = str_replace('#TITLE181H#',stripslashes(strip_tags($task['18h']['comment'])),  $colResponse);
         $colResponse = str_replace('#TITLE18H#',stripslashes($task['18h']['comment']),  $colResponse);
         $colResponse = str_replace('#DATADAY#' , $intlDoW[$i],             $colResponse);
         $response .= $colResponse;
@@ -206,7 +217,7 @@ function planner_manager_table() {
 
 //manage POST here
 if (isset($_POST['secureToken']) && !empty($_POST['secureToken'])) {
-    $comment = isset($_POST['txtComment']) ? $_POST['txtComment'] : null;
+    $comment = isset($_POST['txtComment']) ? strip_tags($_POST['txtComment']) : null;
     $day = isset($_POST['txtDayDay']) ? $_POST['txtDayDay'] : null ;
     if (!$day) {
         $alert = addAlert('error', 'Le jour de la semaine n\'a pu être trouvé.', $alert);
